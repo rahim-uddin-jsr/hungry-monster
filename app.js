@@ -27,6 +27,7 @@ const displayMealInfo = (mealData) => {
         `;
     foodItemName.innerHTML = mealInformation;
     foodItemName.addEventListener("click", function () {
+      console.log("clicked");
       mealIngredientsInfo(item.idMeal);
     });
     mealContainer.appendChild(foodItemName);
@@ -39,28 +40,35 @@ const mealIngredientsInfo = (mealItemName) => {
   const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItemName}`;
   fetch(url)
     .then((response) => response.json())
-    .then((data) => displayDetails(data));
+    .then((data) => {
+      displayDetails(data.meals[0]);
+    });
 };
 
 //meal ingredients details information
 
 const displayDetails = (mealItemDetails) => {
-  const mealItemsInformation = document.getElementById("mealItemsInfo");
-  mealItemDetails.forEach((items) => {
-    const mealItemsInformations = document.innerHTML("div");
-    mealItemsInformations.className = "ingredients-info";
-    console.log(items.strMeal);
-    const itemsName = document.createElement("h1");
-    const ingredients = document.createElement("h5");
-    ingredients.innerText = "Ingredients";
-    itemsName.innerText = items.strMeal;
-    const ul = document.createElement("ul");
-    const imgUrl = document.createElement("img");
-    imgUrl.src = items.strMealThumb;
-    mealItemsInformations.appendChild(imgUrl);
-    const li = `
-        
-         <li>${items.strIngredient1}</li>
+  const mealCard = document.getElementById("mealItemsInfo");
+  mealCard.textContent = "";
+  const { strMeal, strMealThumb } = mealItemDetails;
+  mealCard.classList.add("ingredients-info");
+
+  //   const mealItemsInformations = document.innerHTML("div");
+  //   mealItemsInformations.className = "ingredients-info";
+  console.log(strMeal);
+  const mealName = document.createElement("h1");
+  mealName.innerText = strMeal;
+
+  const ingredients = document.createElement("h5");
+  ingredients.innerText = "Ingredients";
+
+  const imgUrl = document.createElement("img");
+  imgUrl.src = strMealThumb;
+
+  /*  const ul = document.createElement("ul");
+  const li = `
+  
+  <li>${items.strIngredient1}</li>
          <li>${items.strIngredient2}</li>
          <li>${items.strIngredient3}</li>
          <li>${items.strIngredient4}</li>
@@ -74,10 +82,11 @@ const displayDetails = (mealItemDetails) => {
          <li>${items.strIngredient12}</li>
          <li>${items.strIngredient13}</li>
         `;
-    ul.innerHTML = li;
-    mealItemsInformations.appendChild(itemsName);
-    mealItemsInformations.appendChild(ingredients);
-    mealItemsInformations.appendChild(ul);
-    mealItemsInformation.appendChild(mealItemsInformations);
-  });
+  ul.innerHTML = li; */
+
+  mealCard.appendChild(imgUrl);
+  mealCard.appendChild(mealName);
+  mealCard.appendChild(ingredients);
+  mealCard.appendChild(ul);
+  //   mealCard.appendChild(mealItemsInformations);
 };
