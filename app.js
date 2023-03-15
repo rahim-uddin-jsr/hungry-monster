@@ -1,9 +1,10 @@
 //------------- handle search button-----------
 const searchFood = () => {
   const searchField = document.getElementById("mealInput");
-  const searchData = searchField.value;
+  //   const searchData = searchField.value;
+  const searchData = "fish";
   const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchData}`;
-  if (searchField.value) {
+  if (!searchField.value) {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -13,7 +14,7 @@ const searchFood = () => {
     alert("Please search something");
   }
 };
-
+searchFood();
 const displayMealInfo = (mealData) => {
   const mealContainer = document.getElementById("mealCard");
   console.log(mealData);
@@ -52,7 +53,7 @@ const displayDetails = (mealItemDetails) => {
   mealCard.textContent = "";
   const { strMeal, strMealThumb } = mealItemDetails;
   mealCard.classList.add("ingredients-info");
-
+  console.log(mealItemDetails);
   //   const mealItemsInformations = document.innerHTML("div");
   //   mealItemsInformations.className = "ingredients-info";
   console.log(strMeal);
@@ -65,7 +66,7 @@ const displayDetails = (mealItemDetails) => {
   const imgUrl = document.createElement("img");
   imgUrl.src = strMealThumb;
 
-  /*  const ul = document.createElement("ul");
+  /*  
   const li = `
   
   <li>${items.strIngredient1}</li>
@@ -82,7 +83,22 @@ const displayDetails = (mealItemDetails) => {
          <li>${items.strIngredient12}</li>
          <li>${items.strIngredient13}</li>
         `;
-  ul.innerHTML = li; */
+ */
+  const ul = document.createElement("ul");
+
+  for (const key in mealItemDetails) {
+    if (Object.hasOwnProperty.call(mealItemDetails, key)) {
+      if (key.startsWith("strIngredient")) {
+        const element = mealItemDetails[key];
+        console.log(element);
+        if (element) {
+          const li = document.createElement("li");
+          li.innerText = element;
+          ul.appendChild(li);
+        }
+      }
+    }
+  }
 
   mealCard.appendChild(imgUrl);
   mealCard.appendChild(mealName);
