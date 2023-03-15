@@ -1,10 +1,9 @@
 //------------- handle search button-----------
+const searchField = document.getElementById("mealInput");
 const searchFood = () => {
-  const searchField = document.getElementById("mealInput");
-  //   const searchData = searchField.value;
-  const searchData = "fish";
+  const searchData = searchField.value;
   const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchData}`;
-  if (!searchField.value) {
+  if (searchField.value) {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -14,7 +13,7 @@ const searchFood = () => {
     alert("Please search something");
   }
 };
-searchFood();
+
 const displayMealInfo = (mealData) => {
   const mealContainer = document.getElementById("mealCard");
   console.log(mealData);
@@ -32,6 +31,7 @@ const displayMealInfo = (mealData) => {
       mealIngredientsInfo(item.idMeal);
     });
     mealContainer.appendChild(foodItemName);
+    searchField.value = "";
   });
 };
 
@@ -54,9 +54,7 @@ const displayDetails = (mealItemDetails) => {
   const { strMeal, strMealThumb } = mealItemDetails;
   mealCard.classList.add("ingredients-info");
   console.log(mealItemDetails);
-  //   const mealItemsInformations = document.innerHTML("div");
-  //   mealItemsInformations.className = "ingredients-info";
-  console.log(strMeal);
+
   const mealName = document.createElement("h1");
   mealName.innerText = strMeal;
 
@@ -66,24 +64,6 @@ const displayDetails = (mealItemDetails) => {
   const imgUrl = document.createElement("img");
   imgUrl.src = strMealThumb;
 
-  /*  
-  const li = `
-  
-  <li>${items.strIngredient1}</li>
-         <li>${items.strIngredient2}</li>
-         <li>${items.strIngredient3}</li>
-         <li>${items.strIngredient4}</li>
-         <li>${items.strIngredient5}</li>
-         <li>${items.strIngredient6}</li>
-         <li>${items.strIngredient7}</li>
-         <li>${items.strIngredient8}</li>
-         <li>${items.strIngredient9}</li>
-         <li>${items.strIngredient10}</li>
-         <li>${items.strIngredient11}</li>
-         <li>${items.strIngredient12}</li>
-         <li>${items.strIngredient13}</li>
-        `;
- */
   const ul = document.createElement("ul");
 
   for (const key in mealItemDetails) {
